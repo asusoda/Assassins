@@ -2,10 +2,7 @@
 
 angular.module('assassinsApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
-    $scope.menu = [{
-      'title': 'Home',
-      'link': '/'
-    },
+    $scope.menu = [
     {
       'title': 'Games',
       'link': '/games/explore'
