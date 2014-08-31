@@ -4,7 +4,7 @@
   <header class="row">
     <div class="col-md-12">
       <h2 class="page-header">Games</h2>
-      <nav>
+      <nav ng-show="isLoggedIn()">
         <ul class="list-inline">
           <li><a ui-sref="game.create">Create a new game</a></li>
           <li><a ui-sref="user.games">View your current games</a></li>
@@ -18,10 +18,12 @@
     </div>
   </div>
   <div class="row">
-    <ul class="list-unstyled">
-      <li ng-repeat="game in explore.games">
-        {{game.title}}
-      </li>
-    </ul>
+    <div class="col-md-12">
+      <ul class="list-unstyled">
+        <li ng-repeat="game in games">
+          <a ui-sref="game.page({ id: game._id })">{{game.title}}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
