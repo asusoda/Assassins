@@ -11,7 +11,7 @@ angular.module('assassinsApp')
       .state('game.explore', {
         url: '/explore',
         templateUrl: 'app/game/views/game.html',
-        controller: 'GameCtrl'
+        controller: 'GameExploreCtrl'
       })
       .state('game.create', {
         url: '/new',
@@ -21,6 +21,21 @@ angular.module('assassinsApp')
       .state('game.page', {
         url: '/:id',
         templateUrl: 'app/game/views/game-page.html',
-        controller: 'GamePageCtrl'
+        controller: 'GamePageCtrl',
+        resolve: {
+          game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id).$object;
+          }
+        }
+      })
+      .state('game.page.edit', {
+        url: '/edit',
+        templateUrl: 'app/game/views/game-edit-page.html',
+        controller: 'GameEditCtrl',
+        resolve: {
+          game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id).$object;
+          }
+        }
       });
   });
