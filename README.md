@@ -11,7 +11,7 @@ This is a web app for the popular game "[Assassins](http://en.wikipedia.org/wiki
  - [Node.JS](http://nodejs.org/)
    - Needed for backend and installing other dependencies with [npm](https://www.npmjs.org/)
  - [Ruby](https://www.ruby-lang.org/)
-   - Used for SASS style compilation (install ruby with [rbenv](https://github.com/sstephenson/rbenv) to save sanity if your on a UNIX based system; [rubyinstaller](http://rubyinstaller.org/) works for Windows)
+   - Used for SASS style compilation (install ruby with [rbenv](https://github.com/sstephenson/rbenv) to save sanity if you're on a UNIX based system; [rubyinstaller](http://rubyinstaller.org/) works for Windows)
  - [MongoDB](http://www.mongodb.org/downloads)
    - You'll need mongoDB to be installed and have the `mongod` process running.
  - [Bower](http://bower.io/)
@@ -23,12 +23,15 @@ This is a web app for the popular game "[Assassins](http://en.wikipedia.org/wiki
 In order to start [contributing](#contributing), you'll need to clone the repository and get all project dependencies installed.  Luckily, this process is made a lot easier with helpful tools like npm and bower.
 
  1. Clone the repository to your local computer
-    `git clone https://github.com/asusoda/Assassins.git` to your desired location on your computer.
+
+  `git clone https://github.com/asusoda/Assassins.git` to your desired location on your computer.
 
  2. Install dependencies with `npm` and `bower`
+
   Simply run `npm install` and `bower install` inside the root folder of the repo you just cloned.  This will install code libraries and packages to your computer.
 
  3. Start up Grunt and MongoDb
+
   Run `grunt serve` to start up the local webserver to view the site and make sure you start the database with running `mongodb`.
 
 #### Project Structure
