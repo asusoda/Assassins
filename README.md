@@ -12,6 +12,7 @@ This is a web app for the popular game "[Assassins](http://en.wikipedia.org/wiki
    - Needed for backend and installing other dependencies with [npm](https://www.npmjs.org/)
  - [Ruby](https://www.ruby-lang.org/)
    - Used for SASS style compilation (install ruby with [rbenv](https://github.com/sstephenson/rbenv) to save sanity if you're on a UNIX based system; [rubyinstaller](http://rubyinstaller.org/) works for Windows)
+   - Install [SASS](http://sass-lang.com/install) is used to compile our CSS stylesheets
  - [MongoDB](http://www.mongodb.org/downloads)
    - You'll need mongoDB to be installed and have the `mongod` process running.
  - [Bower](http://bower.io/)
