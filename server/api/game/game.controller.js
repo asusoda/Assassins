@@ -28,6 +28,77 @@ exports.create = function(req, res) {
   });
 };
 
+// Check if user is a player in the game
+exports.checkPlayer = function(req, res) {
+  Game.findById(req.params.id, function(err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+    if(game.players.indexOf(req.params.user_id) > -1) {
+      return res.json(200, game);
+    } else {
+      return res.json(200, {"error": {"message":"User is not a player in this game"}});
+    }
+  });
+};
+
+// Add user to game
+exports.addPlayer = function(req, res) {
+  Game.findByIdAndUpdate(
+    req.params.id,
+    { $push: { 'players': req.params.user_id }},
+    function(err, game) {
+      if(err) { return handleError(res, err); }
+      if(!game) { return res.send(404); }
+      return res.json(200, game);
+    });
+};
+
+// Remove user from game
+exports.removePlayer = function(req, res) {
+  Game.findByIdAndUpdate(
+    req.params.id,
+    { $pull: { 'players': req.params.user_id }},
+    function(err, game) {
+      if(err) { return handleError(res, err); }
+      if(!game) { return res.send(404); }
+      return res.json(200, game);
+    });
+};
+
+// Check if user is an organizer in the game
+exports.checkAdmin = function(req, res) {
+  Game.findById(req.params.id, function(err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+    if(game.admins.length < 1) { return res.send(404, {"error": {"message":"No admins"}}); }
+    if(game.admins.indexOf(req.params.user_id) > -1) {
+      return res.json(200, game);
+    } else {
+      return res.json(200, {"error": {"message":"User is not an admin"}});
+    }
+  });
+};
+
+// Add admin to the game
+exports.addAdmin = function(req, res) {
+  Game.findById(req.params.id, function(err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+    console.log(game.admins.indexOf(req.body._id));
+    return res.json(200, game.admins.indexOf(req.body._id));
+  });
+};
+
+// Remove admin from the game
+exports.removeAdmin = function(req, res) {
+  Game.findById(req.params.id, function(err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+    console.log(game.admins.indexOf(req.body._id));
+    return res.json(200, game.admins.indexOf(req.body._id));
+  });
+};
+
 // Updates an existing game in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }

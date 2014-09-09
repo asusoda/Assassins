@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('assassinsApp')
-.factory('Games', ['$http', 'Restangular', function($http, Restangular) {
+.factory('Games', ['Restangular', function(Restangular) {
   return {
     create: function(data) {
       return Restangular.all('games').post(data);
@@ -14,6 +14,24 @@ angular.module('assassinsApp')
     },
     edit: function(id, data) {
       return Restangular.one('games', id).put(data);
+    },
+    checkPlayer: function(game, id) {
+      return Restangular.one('games', game).one('players', id).get();
+    },
+    addPlayer: function(game, id) {
+      return Restangular.one('games', game).one('players', id).put();
+    },
+    removePlayer: function(game, id) {
+      return Restangular.one('games', game).one('players', id).remove();
+    },
+    checkAdmin: function(game, id) {
+      return Restangular.one('games', game).one('admins', id).get();
+    },
+    addAdmin: function(game, id) {
+      return Restangular.one('games', game).one('admins', id).put();
+    },
+    removeAdmin: function(game, id) {
+      return Restangular.one('games', game).one('admins', id).remove();
     }
   }
 }]);
