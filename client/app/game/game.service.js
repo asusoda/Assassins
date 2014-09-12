@@ -24,6 +24,9 @@ angular.module('assassinsApp')
     removePlayer: function(game, id) {
       return Restangular.one('games', game).one('players', id).remove();
     },
+    getPlayers: function(game) {
+      return Restangular.one('games', game).getList('players');
+    },
     checkAdmin: function(game, id) {
       return Restangular.one('games', game).one('admins', id).get();
     },
@@ -32,6 +35,9 @@ angular.module('assassinsApp')
     },
     removeAdmin: function(game, id) {
       return Restangular.one('games', game).one('admins', id).remove();
+    },
+    getAdmins: function(game) {
+      return Restangular.one('games', game).getList('admins');
     }
   }
 }]);

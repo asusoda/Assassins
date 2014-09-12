@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Game = require('./game.model');
+var Target = require('./target.model');
 
 // Get list of games
 exports.index = function(req, res) {
@@ -13,7 +14,7 @@ exports.index = function(req, res) {
 
 // Get a single game
 exports.show = function(req, res) {
-  Game.findById(req.params.id, function (err, game) {
+  Game.findById(req.params.id, '-players -admins', function (err, game) {
     if(err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
     return res.json(game);
@@ -38,6 +39,17 @@ exports.checkPlayer = function(req, res) {
     } else {
       return res.json(200, {"error": {"message":"User is not a player in this game"}});
     }
+  });
+};
+
+// Returns players in a game
+exports.getPlayers = function(req, res) {
+  Game.findById(req.params.id, function(err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+    Game.populate(game, { path: 'players' }, function(err, game) {
+      return res.json(200, game.players);
+    });
   });
 };
 
@@ -70,7 +82,7 @@ exports.checkAdmin = function(req, res) {
   Game.findById(req.params.id, function(err, game) {
     if(err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
-    if(game.admins.length < 1) { return res.send(404, {"error": {"message":"No admins"}}); }
+    if(game.admins.length < 1) { return res.send(200, {"error": {"message":"No admins"}}); }
     if(game.admins.indexOf(req.params.user_id) > -1) {
       return res.json(200, game);
     } else {
@@ -79,12 +91,22 @@ exports.checkAdmin = function(req, res) {
   });
 };
 
+// Returns admins in a game
+exports.getAdmins = function(req, res) {
+  Game.findById(req.params.id, function(err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+    Game.populate(game, { path: 'admins' }, function(err, game) {
+      return res.json(200, game.admins);
+    });
+  });
+};
+
 // Add admin to the game
 exports.addAdmin = function(req, res) {
   Game.findById(req.params.id, function(err, game) {
     if(err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
-    console.log(game.admins.indexOf(req.body._id));
     return res.json(200, game.admins.indexOf(req.body._id));
   });
 };
@@ -94,7 +116,6 @@ exports.removeAdmin = function(req, res) {
   Game.findById(req.params.id, function(err, game) {
     if(err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
-    console.log(game.admins.indexOf(req.body._id));
     return res.json(200, game.admins.indexOf(req.body._id));
   });
 };
