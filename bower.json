@@ -16,7 +16,8 @@
     "lodash": "~2.4.1",
     "angular-socket-io": "~0.6.0",
     "angular-ui-router": "~0.2.10",
-    "restangular": "1.4.0"
+    "restangular": "1.4.0",
+    "AngularJS-Toaster": "0.4.7"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('assassinsApp')
-.directive('buttonGameJoin', ['Games', 'Auth', function(Games, Auth) {
+.directive('buttonGameJoin', ['Games', 'Auth', 'toaster', function(Games, Auth, toaster) {
   return {
     restrict: 'A',
     scope: {
@@ -49,25 +49,27 @@ angular.module('assassinsApp')
           if(scope.inGame) {
             Games.removePlayer(game._id, user._id).then(function(res) {
               if(res && !res.error) {
+                toaster.pop('success', 'Left game', 'You just left ' + scope.game.title);
                 scope.inGame = false;
                 scope.btn.class = 'btn-success';
                 scope.btn.icon = 'glyphicon-plus';
                 scope.btn.text = 'Join game';
                 scope.game.players.splice(scope.game.players.indexOf(user), 1);
               } else {
-                // Toaster error message
+                toaster.pop('error', 'Oops! There was an issue', res.error.message);
               }
             });
           } else {
             Games.addPlayer(game._id, user._id).then(function(res) {
               if(res && !res.error) {
+                toaster.pop('success', 'Joined game', 'You just joined ' + scope.game.title);
                 scope.inGame = true;
                 scope.btn.class = 'btn-success';
                 scope.btn.icon = 'glyphicon-ok';
                 scope.btn.text = 'In game';
-                scope.game.players.push(user._id);
+                scope.game.players.push(user);
               } else {
-                // Toaster error message
+                toaster.pop('error', 'Oops! There was an issue', res.error.message);
               }
             });
           }

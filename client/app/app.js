@@ -7,7 +7,8 @@ angular.module('assassinsApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  'restangular'
+  'restangular',
+  'toaster'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, RestangularProvider) {
     $urlRouterProvider
