@@ -5,30 +5,40 @@
 
 'use strict';
 
-var Thing = require('../api/thing/thing.model');
+var Game = require('../api/game/game.model');
 var User = require('../api/user/user.model');
 
-Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
-  }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
-  }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
+Game.find({}).remove(function() {
+    Game.create({
+      title : 'Cras Parturient Euismod Cras Parturient Euismod',
+      location : 'Phoenix, AZ',
+      description : 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla.'
+    }, {
+      title : 'Pharetra Quam Justo',
+      location : 'Flagstaff, AZ',
+      description : 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.'
+    }, {
+      title : 'Cras Amet Dapibus',
+      location : 'Tempe, AZ',
+      description : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.'
+    }, {
+      title : 'Sem Ridiculus Sit',
+      location : 'Showlow, AZ',
+      description : 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Curabitur blandit tempus porttitor. Cras mattis consectetur purus sit amet fermentum.'
+    }, {
+      title : 'Dolor Euismod Sollicitudin Vehicula',
+      location : 'Scottsdale, AZ',
+      description : 'Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam id dolor id nibh ultricies vehicula ut id elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.'
+    }, {
+      title : 'Nibh Fermentum Pharetra Tortor',
+      location : 'Sedona, AZ',
+      description : 'Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.'
+    }, function() {
+      console.log('finished populating games');
+    });
   });
-});
+
+//Game.find({}).remove();
 
 User.find({}).remove(function() {
   User.create({
