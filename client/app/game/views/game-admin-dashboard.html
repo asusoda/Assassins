@@ -1,55 +1,52 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h1><a ui-sref="game.page({ id: game._id })">{{game.title}}</a> Dashboard</h1>
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table table-responsive table-group-members">
-            <thead>
-              <tr>
-                <td>Username</td>
-                <td>Joined game</td>
-                <td>Target</td>
-                <td>Assassin</td>
-                <td>Status</td>
-                <td>Actions</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="player in game.players track by $index">
-                <td><a ui-sref="player.page({ id: player._id })">{{player}}</a></td>
-                <td>{{player.join_time}}</td>
-                <td>{{player.target}}</td>
-                <td>{{player.assassin}}</td>
-                <td>{{player.status}}</td>
-                <td>
-                  <ul class="list-inline">
-                    <li><button class="btn btn-default">Assign target</button></li>
-                    <li><button class="btn btn-danger">Ban player</button></li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8">
-          <form role="form">
-            <div class="form-group">
-              <label for="game-title">Title</label>
-              <input type="text" class="form-control" id="game-title" ng-model="formData.title">
+      <ol class="breadcrumb">
+        <li><a ui-sref="game.page({ id: game._id })">{{game.title}}</a></li>
+        <li class="active">Admin Dashboard</li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="nav nav-pills nav-stacked">
+        <li><a ui-sref="game.page.admin({ id: game._id })">Game details</a></li>
+        <li><a ui-sref="game.page.admin.players({ id: game._id })">Player management</a></li>
+        <li><a ui-sref="game.page.admin.eliminations({ id: game._id })">Eliminations</a></li>
+        <li><a ui-sref="game.page.admin.announcements({ id: game._id })">Announcements</a></li>
+      </ul>
+    </div>
+    <div class="col-md-9">
+      <div ui-view>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-container">
+              <div class="section-header">
+                <h3>Details</h3>
+              </div>
+              <div class="section-inner">
+                <form role="form">
+                  <div class="form-group">
+                    <label for="game-title">Title</label>
+                    <input type="text" class="form-control" id="game-title" ng-model="formData.title">
+                  </div>
+                  <div class="form-group">
+                    <label for="game-title">Location</label>
+                    <input type="text" class="form-control" id="game-title" ng-model="formData.location">
+                  </div>
+                  <div class="form-group">
+                    <label for="game-description">Description</label>
+                    <textarea name="game-description" class="form-control" cols="30" rows="10" ng-model="formData.description"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-success" role="button" ng-click="edit()">
+                      Edit
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="game-description">Description</label>
-              <textarea name="game-description" class="form-control" cols="30" rows="10" ng-model="formData.description"></textarea>
-            </div>
-            <div class="form-group">
-              <button class="btn btn-success" role="button" ng-click="edit()">
-                Edit
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

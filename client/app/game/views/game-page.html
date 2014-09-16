@@ -6,11 +6,16 @@
       <div class="col-md-8">
         <header>
           <h1>{{game.title}}</h1>
+          <ul class="list-inline">
+            <li ng-if="game.location">{{game.location}}</li>
+            <li>{{game.created_on | date:'longDate'}}</li>
+            <li>Game active: {{game.active}}</li>
+          </ul>
           <h3>{{game.admins}}</h3>
-          <div class="game-action-bar" ng-if="isLoggedIn() && game">
+          <div class="game-action-bar" ng-if="isLoggedIn()">
             <ul class="list-inline">
               <li><div button-game-join game="game" user="user"></div></li>
-              <li><button class="btn btn-default" ng-if="isOrganizer" ui-sref="game.page.edit({ id: game._id })"><span class="glyphicon glyphicon-cog"></span>Admin Dashboard</button></li>
+              <li><button class="btn btn-default" ng-if="isOrganizer" ui-sref="game.page.admin({ id: game._id })"><span class="glyphicon glyphicon-cog"></span>Admin Dashboard</button></li>
             </ul>
           </div>
         </header>
@@ -18,8 +23,8 @@
       </div>
       <div class="col-md-4">
         <ul class="list-unstyled">
-          <h3>Players {{game.players.length}}</h3>
-          <li ng-repeat="player in game.players"><a ui-sref-"player.page({ id: player })">{{player.username}} - {{player}}</a></li>
+          <h3>{{game.players.length}} Players</h3>
+          <li ng-repeat="player in game.players track by $index"><a ui-sref-"player.page({ id: player })">{{player.name}}</a></li>
         </ul>
       </div>
     </div>

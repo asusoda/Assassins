@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-responsive table-group-members">
+      <thead>
+        <tr>
+          <td>Username</td>
+          <td>Joined game</td>
+          <td>Target</td>
+          <td>Assassin</td>
+          <td>Status</td>
+          <td>Actions</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in game.players track by $index">
+          <td><a ui-sref="player.page({ id: player._id })">{{player.name}}</a></td>
+          <td>{{player.join_time}}</td>
+          <td>{{player.target}}</td>
+          <td>{{player.assassin}}</td>
+          <td>{{player.status}}</td>
+          <td>
+            <ul class="list-inline">
+              <li><button class="btn btn-default">Assign target</button></li>
+              <li><button class="btn btn-danger">Ban player</button></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

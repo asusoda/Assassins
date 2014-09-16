@@ -24,14 +24,41 @@ angular.module('assassinsApp')
         controller: 'GamePageCtrl',
         resolve: {
           game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id);
+          }
+        }
+      })
+      .state('game.page.admin', {
+        url: '/settings',
+        templateUrl: 'app/game/views/game-admin-dashboard.html',
+        controller: 'GameEditCtrl',
+        resolve: {
+          game: function($stateParams, Games) {
             return Games.getGame($stateParams.id).$object;
           }
         }
       })
-      .state('game.page.edit', {
-        url: '/edit',
-        templateUrl: 'app/game/views/game-edit-page.html',
-        controller: 'GameEditCtrl',
+      .state('game.page.admin.players', {
+        url: '/players',
+        templateUrl: 'app/game/views/game-admin-players.html',
+        resolve: {
+          game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id).$object;
+          }
+        }
+      })
+      .state('game.page.admin.eliminations', {
+        url: '/eliminations',
+        templateUrl: 'app/game/views/game-admin-eliminations.html',
+        resolve: {
+          game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id).$object;
+          }
+        }
+      })
+      .state('game.page.admin.announcements', {
+        url: '/announcements',
+        templateUrl: 'app/game/views/game-admin-announcements.html',
         resolve: {
           game: function($stateParams, Games) {
             return Games.getGame($stateParams.id).$object;

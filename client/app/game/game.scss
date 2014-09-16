@@ -1,0 +1,28 @@
+/**
+ * Game admin dashboard
+ */
+
+/**
+ * Sections
+ */
+.section-container {
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+.section-header {
+  border-bottom: 1px solid #cccccc;
+  padding: 15px;
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+.section-inner {
+  padding: 15px;
+  .form-group {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
