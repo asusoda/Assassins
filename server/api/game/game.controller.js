@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var Game = require('./game.model');
-var Target = require('./target.model');
+var crypto = require('crypto');
 
 // Get list of games
 exports.index = function(req, res) {
@@ -23,6 +23,7 @@ exports.show = function(req, res) {
 
 // Creates a new game in the DB.
 exports.create = function(req, res) {
+  req.body.join_url = randomValueBase64(7);
   Game.create(req.body, function(err, game) {
     if(err) { return handleError(res, err); }
     return res.json(201, game);
@@ -57,7 +58,7 @@ exports.getPlayers = function(req, res) {
 exports.addPlayer = function(req, res) {
   Game.findByIdAndUpdate(
     req.params.id,
-    { $push: { 'players': req.params.user_id }},
+    { $push: { players: { user: req.body.user, alias: req.body.alias } } },
     function(err, game) {
       if(err) { return handleError(res, err); }
       if(!game) { return res.send(404); }
@@ -120,6 +121,16 @@ exports.removeAdmin = function(req, res) {
   });
 };
 
+// Reset join URL for the game
+exports.resetJoinKey = function(req, res) {
+  var key = randomValueBase64(7);
+  Game.findByIdAndUpdate(req.params.id, { $set: { join_url: key } }, function(err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+    return res.json(200, { key: game.join_url });
+  });
+};
+
 // Updates an existing game in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
@@ -145,6 +156,14 @@ exports.destroy = function(req, res) {
     });
   });
 };
+
+function randomValueBase64 (len) {
+  return crypto.randomBytes(Math.ceil(len * 3 / 4))
+    .toString('base64')   // convert to base64 format
+    .slice(0, len)        // return required number of characters
+    .replace(/\+/g, '0')  // replace '+' with '0'
+    .replace(/\//g, '0'); // replace '/' with '0'
+}
 
 function handleError(res, err) {
   return res.send(500, err);

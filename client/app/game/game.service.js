@@ -18,8 +18,8 @@ angular.module('assassinsApp')
     checkPlayer: function(game, id) {
       return Restangular.one('games', game).one('players', id).get();
     },
-    addPlayer: function(game, id) {
-      return Restangular.one('games', game).one('players', id).put();
+    addPlayer: function(game, user) {
+      return Restangular.one('games', game).all('players').post(user);
     },
     removePlayer: function(game, id) {
       return Restangular.one('games', game).one('players', id).remove();

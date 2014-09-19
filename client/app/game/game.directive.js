@@ -62,7 +62,7 @@ angular.module('assassinsApp')
           } else {
             Games.addPlayer(game._id, user._id).then(function(res) {
               if(res && !res.error) {
-                toaster.pop('success', 'Joined game', 'You just joined ' + scope.game.title);
+                toaster.pop('success', 'Great success! Joined game', 'You just joined ' + scope.game.title);
                 scope.inGame = true;
                 scope.btn.class = 'btn-success';
                 scope.btn.icon = 'glyphicon-ok';

@@ -29,10 +29,31 @@ angular.module('assassinsApp')
   });
 
 angular.module('assassinsApp')
-  .controller('GameEditCtrl', function ($scope, $stateParams, Games, game) {
-    $scope.game = game;
+  .controller('GameJoinCtrl', function ($scope, $state, $stateParams, toaster, Games, Auth, game) {
+    var user = Auth.getCurrentUser();
 
     $scope.formData = {};
+    $scope.formData.user = user._id;
+
+    $scope.join = function() {
+      if($stateParams.join_url == game.join_url) {
+        console.log('correct join url');
+        Games.addPlayer(game._id, $scope.formData).then(function(res) {
+          if(res && !res.error) {
+            console.log(res);
+            toaster.pop('success', 'Great success! Joined game', 'You just joined ' + $scope.game.title);
+            $state.go('game.page', { id: game._id }, { reload: true });
+          } else {
+            toaster.pop('error', 'Oops! There was an issue', res.error.message);
+          }
+        });
+      } else {
+        console.log('incorrect join url');
+      }
+    };
+
+  });
+
     $scope.formData.title = game.title;
     $scope.formData.description = game.description;
 
