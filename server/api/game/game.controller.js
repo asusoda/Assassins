@@ -32,10 +32,20 @@ exports.create = function(req, res) {
 
 // Check if user is a player in the game
 exports.checkPlayer = function(req, res) {
+  Game.findById(req.params.id)
+    .populate('players.user')
+    .exec(function(err, game) {
+      if(err) { return handleError(res, err); }
+      if(!game) { return res.send(404); }
+      console.log(_.map(game.players, function(player){ return player.user }));
+      return res.json(200, game.players);
+    });
   Game.findById(req.params.id, function(err, game) {
     if(err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
-    if(game.players.indexOf(req.params.user_id) > -1) {
+    Game.populate(game, { path: ''})
+    console.log(_.indexOf(game.players, req.params.user_id));
+    if(_.chain(game.players).indexOf(req.params.user_id) > -1) {
       return res.json(200, game);
     } else {
       return res.json(200, {"error": {"message":"User is not a player in this game"}});
@@ -45,13 +55,13 @@ exports.checkPlayer = function(req, res) {
 
 // Returns players in a game
 exports.getPlayers = function(req, res) {
-  Game.findById(req.params.id, function(err, game) {
-    if(err) { return handleError(res, err); }
-    if(!game) { return res.send(404); }
-    Game.populate(game, { path: 'players' }, function(err, game) {
+  Game.findById(req.params.id)
+    .populate('players.user')
+    .exec(function(err, game) {
+      if(err) { return handleError(res, err); }
+      if(!game) { return res.send(404); }
       return res.json(200, game.players);
     });
-  });
 };
 
 // Add user to game
@@ -70,7 +80,7 @@ exports.addPlayer = function(req, res) {
 exports.removePlayer = function(req, res) {
   Game.findByIdAndUpdate(
     req.params.id,
-    { $pull: { 'players': req.params.user_id }},
+    { $pull: { players: { $pull: { user: req.params.user_id } } } },
     function(err, game) {
       if(err) { return handleError(res, err); }
       if(!game) { return res.send(404); }
@@ -97,7 +107,7 @@ exports.getAdmins = function(req, res) {
   Game.findById(req.params.id, function(err, game) {
     if(err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
-    Game.populate(game, { path: 'admins' }, function(err, game) {
+    Game.populate(game, { path: 'admins', select: '-hashedPassword -salt' }, function(err, game) {
       return res.json(200, game.admins);
     });
   });

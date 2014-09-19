@@ -12,6 +12,10 @@ var UserSchema = new Schema({
     type: String,
     default: 'user'
   },
+  games: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Game'
+  }],
   hashedPassword: String,
   provider: String,
   salt: String,

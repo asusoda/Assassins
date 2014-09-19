@@ -94,6 +94,10 @@ exports.me = function(req, res, next) {
 };
 
 /**
+ * Get user's games
+ */
+
+/**
  * Authentication callback
  */
 exports.authCallback = function(req, res, next) {

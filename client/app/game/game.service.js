@@ -15,6 +15,9 @@ angular.module('assassinsApp')
     edit: function(id, data) {
       return Restangular.one('games', id).put(data);
     },
+    resetJoinKey: function(id, key) {
+      return Restangular.one('games', id).one('join', key).put();
+    },
     checkPlayer: function(game, id) {
       return Restangular.one('games', game).one('players', id).get();
     },
@@ -39,5 +42,5 @@ angular.module('assassinsApp')
     getAdmins: function(game) {
       return Restangular.one('games', game).getList('admins');
     }
-  }
+  };
 }]);
