@@ -33,24 +33,17 @@ exports.create = function(req, res) {
 // Check if user is a player in the game
 exports.checkPlayer = function(req, res) {
   Game.findById(req.params.id)
-    .populate('players.user')
     .exec(function(err, game) {
       if(err) { return handleError(res, err); }
       if(!game) { return res.send(404); }
-      console.log(_.map(game.players, function(player){ return player.user }));
-      return res.json(200, game.players);
+      _.filter(game.players, function(i) {
+        if(i.user == req.params.user_id) {
+          return res.json(200, {"success": {"message":"User is in game"}});
+        } else {
+          return res.json(200, {"error": {"message":"User is not a player in this game"}});
+        }
+      });
     });
-  Game.findById(req.params.id, function(err, game) {
-    if(err) { return handleError(res, err); }
-    if(!game) { return res.send(404); }
-    Game.populate(game, { path: ''})
-    console.log(_.indexOf(game.players, req.params.user_id));
-    if(_.chain(game.players).indexOf(req.params.user_id) > -1) {
-      return res.json(200, game);
-    } else {
-      return res.json(200, {"error": {"message":"User is not a player in this game"}});
-    }
-  });
 };
 
 // Returns players in a game
