@@ -45,6 +45,27 @@ angular.module('assassinsApp')
   });
 
 angular.module('assassinsApp')
+  .controller('GameProfileCtrl', function ($scope, Games, Auth, game) {
+    var user = Auth.getCurrentUser();
+
+    $scope.game = game;
+    $scope.user = user;
+    $scope.game.players = Games.getPlayers(game._id).$object;
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.player = {};
+    $scope.isOrganizer = false;
+
+    Games.checkAdmin(game._id, user._id).then(function(res) {
+      if(res && !res.error) {
+        $scope.isOrganizer = true;
+      } else {
+        $scope.isOrganizer = false;
+      }
+    });
+
+  });
+
+angular.module('assassinsApp')
   .controller('GameJoinCtrl', function ($scope, $state, $stateParams, toaster, Games, Auth, game) {
     var user = Auth.getCurrentUser();
 
