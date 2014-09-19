@@ -28,6 +28,16 @@ angular.module('assassinsApp')
           }
         }
       })
+      .state('game.page.player', {
+        url: '/player/:player_id',
+        templateUrl: 'app/game/views/game-page-player.html',
+        controller: 'GameProfileCtrl',
+        resolve: {
+          game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id);
+          }
+        }
+      })
       .state('game.page.join', {
         url: '/join/:join_url',
         templateUrl: 'app/game/views/game-page-join.html',

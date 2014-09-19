@@ -1,0 +1,10 @@
+<div class="row">
+  <div>
+    <h1>{{player.alias}}</h1>
+    <h3>{{player.status}}</h3>
+    <ul class="list-unstyled">
+      <h3>History</h3>
+      <li ng-repeat="event in player.history">{{event.time}}: {{event.information}}</li>
+    </ul>
+  </div>
+</div>
