@@ -19,7 +19,7 @@ angular.module('assassinsApp')
       return Restangular.one('games', id).one('join', key).put();
     },
     checkPlayer: function(game, id) {
-      return Restangular.one('games', game).one('players', id).get();
+      return Restangular.one('games', game).one('users', id).get();
     },
     addPlayer: function(game, user) {
       return Restangular.one('games', game).all('players').post(user);
@@ -29,6 +29,9 @@ angular.module('assassinsApp')
     },
     getPlayers: function(game) {
       return Restangular.one('games', game).getList('players');
+    },
+    getPlayer: function(game, id) {
+      return Restangular.one('games', game).one('players', id).get();
     },
     checkAdmin: function(game, id) {
       return Restangular.one('games', game).one('admins', id).get();

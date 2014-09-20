@@ -31,7 +31,7 @@ exports.create = function(req, res) {
 };
 
 // Check if user is a player in the game
-exports.checkPlayer = function(req, res) {
+exports.checkUser = function(req, res) {
   Game.findById(req.params.id)
     .exec(function(err, game) {
       if(err) { return handleError(res, err); }
@@ -54,6 +54,21 @@ exports.getPlayers = function(req, res) {
       if(err) { return handleError(res, err); }
       if(!game) { return res.send(404); }
       return res.json(200, game.players);
+    });
+};
+
+// Returns a single player in a game
+exports.getPlayer = function(req, res) {
+  Game.findById(req.params.id)
+    .exec(function(err, game) {
+      if(err) { return handleError(res, err); }
+      if(!game) { return res.send(404); }
+      var player = game.players.id(req.params.user_id);
+      if(player) {
+        return res.json(200, player);
+      } else {
+        return res.json(200, {"error": {"message":"User was not found in game."}});
+      }
     });
 };
 

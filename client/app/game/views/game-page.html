@@ -24,7 +24,9 @@
       <div class="col-md-4">
         <ul class="list-unstyled">
           <h3>{{game.players.length}} Players</h3>
-          <li ng-repeat="player in game.players track by $index"><a ui-sref-"player.page({ id: player })">{{player.alias}}</a></li>
+          <li ng-repeat="player in game.players">
+            <a ui-sref="game.page.player({ id: game._id, player_id: player._id })">{{player.alias}}</a>
+          </li>
         </ul>
       </div>
     </div>
