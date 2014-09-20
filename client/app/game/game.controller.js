@@ -45,23 +45,12 @@ angular.module('assassinsApp')
   });
 
 angular.module('assassinsApp')
-  .controller('GameProfileCtrl', function ($scope, Games, Auth, game) {
+  .controller('GameProfileCtrl', function ($scope, Games, Auth, game, player) {
     var user = Auth.getCurrentUser();
 
     $scope.game = game;
+    $scope.player = player;
     $scope.user = user;
-    $scope.game.players = Games.getPlayers(game._id).$object;
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.player = {};
-    $scope.isOrganizer = false;
-
-    Games.checkAdmin(game._id, user._id).then(function(res) {
-      if(res && !res.error) {
-        $scope.isOrganizer = true;
-      } else {
-        $scope.isOrganizer = false;
-      }
-    });
 
   });
 

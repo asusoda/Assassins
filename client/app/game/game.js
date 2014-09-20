@@ -29,12 +29,15 @@ angular.module('assassinsApp')
         }
       })
       .state('game.page.player', {
-        url: '/player/:player_id',
+        url: '/players/:player_id',
         templateUrl: 'app/game/views/game-page-player.html',
         controller: 'GameProfileCtrl',
         resolve: {
           game: function($stateParams, Games) {
             return Games.getGame($stateParams.id);
+          },
+          player: function($stateParams, Games) {
+            return Games.getPlayer($stateParams.id, $stateParams.player_id);
           }
         }
       })
