@@ -1,10 +1,18 @@
-<div class="row">
-  <div>
-    <h1>{{player.alias}}</h1>
-    <h3>{{player.status}}</h3>
-    <ul class="list-unstyled">
-      <h3>History</h3>
-      <li ng-repeat="event in player.history">{{event.time}}: {{event.information}}</li>
-    </ul>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="player-profile">
+        <h1>"{{player.alias}}" in <a ui-sref="game.page({ id: game._id })">{{game.title}}</a></h1>
+        <ul class="list-inline">
+          <li>Score: {{player.score}}</li>
+          <li>Alive: {{player.alive}}</li>
+          <li>{{player.join_time | date:'longDate'}}</li>
+        </ul>
+      </div>
+      <ul class="list-unstyled">
+        <h3>History</h3>
+        <li ng-repeat="event in player.history">{{event.time}}: {{event.information}}</li>
+      </ul>
+    </div>
   </div>
 </div>
