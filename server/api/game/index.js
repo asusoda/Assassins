@@ -15,10 +15,15 @@ router.get('/:id/admins', controller.getAdmins);
 router.get('/:id/admins/:user_id', controller.checkAdmin);
 router.put('/:id/admins/:user_id', controller.addAdmin);
 router.delete('/:id/admins/:user_id', controller.removeAdmin);
-router.get('/:id/players', controller.getPlayers);
-router.get('/:id/players/:user_id', controller.getPlayer);
 router.post('/:id/players', controller.addPlayer);
-router.delete('/:id/players/:user_id', controller.removePlayer);
+router.get('/:id/players', controller.getPlayers);
+router.get('/:id/players/:player_id', controller.getPlayer);
+router.delete('/:id/players/:player_id', controller.removePlayer);
+router.put('/:id/players/:player_id/targets/:target_id', controller.assignTarget);
+router.get('/:id/players/:player_id/targets', controller.getTargets);
+router.get('/:id/players/:player_id/targets/:target_id', controller.getTarget);
+router.put('/:id/players/:player_id/targets/:target_id', controller.updateTarget);
+router.delete('/:id/players/:player_id/targets/:target_id', controller.removeTarget);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 

@@ -11,15 +11,7 @@ var GameSchema = new Schema({
   active: { type: Boolean, default: true },
   accepting_players: { type: Boolean, default: true },
   join_url: { type: String },
-  players: [{
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    alias: { type: String, required: true },
-    score: { type: Number, default: 0 },
-    alive: { type: Boolean, default: true },
-    banned: { type: Boolean, default: false },
-    target: { type: Schema.Types.ObjectId, ref: 'Target' },
-    join_time: { type: Date, default: Date.now }
-  }],
+  players: [{ type: Schema.Types.ObjectId, ref: 'Player' }],
   rules: {
     weapons: [{ type: String }],
     safe_zones: [{ type: String }],
