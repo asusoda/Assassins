@@ -18,5 +18,20 @@ angular.module('assassinsApp')
         templateUrl: 'app/account/settings/settings.html',
         controller: 'SettingsCtrl',
         authenticate: true
+      })
+      .state('user', {
+        abstract: true,
+        url: '/users',
+        template: '<ui-view/>'
+      })
+      .state('user.profile', {
+        url: '/:id',
+        templateUrl: 'app/account/profile/views/page-user-profile.html',
+        controller: 'UserProfileCtrl',
+        resolve: {
+          user: function($stateParams, Users) {
+            return Users.getUser($stateParams.id);
+          }
+        }
       });
   });
