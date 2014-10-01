@@ -48,6 +48,22 @@ exports.show = function (req, res, next) {
 };
 
 /**
+ * Get a user's games
+ */
+exports.getGames = function (req, res, next) {
+  var userId = req.params.id;
+
+  User.findById(userId)
+    .populate('games.game', '-admins -players -rules')
+    .populate(' games.player')
+    .exec(function (err, user) {
+    if (err) return next(err);
+    if (!user) return res.send(401);
+    res.json(user.games);
+  });
+};
+
+/**
  * Deletes a user
  * restriction: 'admin'
  */
@@ -92,10 +108,6 @@ exports.me = function(req, res, next) {
     res.json(user);
   });
 };
-
-/**
- * Get user's games
- */
 
 /**
  * Authentication callback
