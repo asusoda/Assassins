@@ -4,7 +4,7 @@ angular.module('assassinsApp')
   .controller('GameExploreCtrl', function ($scope, Games, Auth) {
     $scope.games = Games.getGames().$object;
 
-    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.isLoggedIn = Auth.isLoggedIn();
   });
 
 angular.module('assassinsApp')
@@ -31,14 +31,22 @@ angular.module('assassinsApp')
     $scope.game = game;
     $scope.user = user;
     $scope.game.players = Games.getPlayers(game._id).$object;
-    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.isLoggedIn = Auth.isLoggedIn();
     $scope.isOrganizer = false;
+    $scope.inGame = false;
 
     Games.checkAdmin(game._id, user._id).then(function(res) {
       if(res && !res.error) {
         $scope.isOrganizer = true;
       } else {
         $scope.isOrganizer = false;
+      }
+    });
+
+    Games.checkPlayer(game._id, user._id).then(function(res) {
+      if(res && !res.error) {
+        $scope.currentPlayer = res;
+        $scope.inGame = true;
       }
     });
 
@@ -58,8 +66,90 @@ angular.module('assassinsApp')
   .controller('GameJoinCtrl', function ($scope, $state, $stateParams, toaster, Games, Auth, game) {
     var user = Auth.getCurrentUser();
 
+    $scope.isLoggedIn = Auth.isLoggedIn();
+    $scope.game = game;
+    $scope.user = {};
+    $scope.errors = {};
     $scope.formData = {};
     $scope.formData.user = user._id;
+
+    /**
+     * Register and join game
+     * @param  {Object} form Submitted form
+     * @return {[type]}      [description]
+     */
+    $scope.register = function(form) {
+      $scope.submitted = true;
+
+      if(form.$valid) {
+        Auth.createUser({
+          name: $scope.user.name,
+          email: $scope.user.email,
+          password: $scope.user.password
+        })
+        .then(function(res) {
+          // Acount created, now add user to game
+          Games.addPlayer(game._id, {
+            alias: $scope.user.alias,
+            user: res._id
+          }).then(function(res) {
+            if(res && !res.error) {
+              toaster.pop('success', 'Great success! Joined game', 'You just joined ' + $scope.game.title);
+              $state.go('game.page', { id: game._id }, { reload: true });
+            } else {
+              toaster.pop('error', 'Oops! There was an issue', res.error.message);
+            }
+          });
+        })
+        .catch( function(err) {
+          err = err.data;
+          $scope.errors = {};
+
+          // Update validity of form fields that match the mongoose errors
+          angular.forEach(err.errors, function(error, field) {
+            form[field].$setValidity('mongoose', false);
+            $scope.errors[field] = error.message;
+          });
+        });
+      }
+    };
+
+    $scope.loginOauth = function(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
+
+    /**
+     * Login and join game
+     * @param  {Object} form Login form submitted by user
+     * @return {[type]}      [description]
+     */
+    $scope.login = function(form) {
+      $scope.submitted = true;
+
+      if(form.$valid) {
+        Auth.login({
+          email: $scope.user.email,
+          password: $scope.user.password
+        })
+        .then( function(res) {
+          // Logged in, now add user to game
+          Games.addPlayer(game._id, {
+            alias: $scope.user.alias,
+            user: res._id
+          }).then(function(res) {
+            if(res && !res.error) {
+              toaster.pop('success', 'Great success! Joined game', 'You just joined ' + $scope.game.title);
+              $state.go('game.page', { id: game._id }, { reload: true });
+            } else {
+              toaster.pop('error', 'Oops! There was an issue', res.error.message);
+            }
+          });
+        })
+        .catch( function(err) {
+          $scope.errors.other = err.message;
+        });
+      }
+    };
 
     $scope.join = function() {
       if($stateParams.join_url == game.join_url) {
@@ -102,6 +192,16 @@ angular.module('assassinsApp')
       });
     };
 
+    $scope.assignTarget = function(target, owner) {
+      Games.assignTarget(game._id, owner._id, target._id).then(function(res) {
+        if(res && !res.error) {
+          toaster.pop('success', 'Assigned target', 'You assigned ' + target.name + ' to ' + owner.name);
+        } else {
+          toaster.pop('error', 'Oops! There was an issue', res.error.message);
+        }
+      });
+    }
+
     $scope.resetJoinKey = function() {
       Games.resetJoinKey(game._id, game.join_url).then(function(res) {
         if(res && !res.error) {
@@ -112,4 +212,5 @@ angular.module('assassinsApp')
         }
       });
     }
+
   });
