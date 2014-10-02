@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-respsonsive table-game-eliminations">
+      <thead>
+        <tr>
+          <td>Owner</td>
+          <td>Target</td>
+          <td>Description</td>
+          <td>Created on</td>
+          <td>Target verified</td>
+          <td>Admin verified</td>
+          <td>Actions</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="elimination in eliminations">
+          <td>{{elimination.owner}}</td>
+          <td>{{elimination.target}}</td>
+          <td>{{elimination.text}}</td>
+          <td>{{elimination.created_on | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+          <td>{{elimination.target_verified}}</td>
+          <td>{{elimination.verified}}</td>
+          <td><button class="btn btn-success">Verify</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

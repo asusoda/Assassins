@@ -28,6 +28,26 @@ angular.module('assassinsApp')
           }
         }
       })
+      .state('game.page.elimination', {
+        url: '/eliminates',
+        templateUrl: 'app/game/views/game-page-eliminate.html',
+        controller: 'GameEliminateCreate',
+        resolve: {
+          game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id);
+          }
+        }
+      })
+      .state('game.page.elimination.page', {
+        url: '/:elimination_id',
+        templateUrl: 'app/game/views/game-page-eliminate.html',
+        controller: 'GameEliminateCreate',
+        resolve: {
+          game: function($stateParams, Games) {
+            return Games.getGame($stateParams.id);
+          }
+        }
+      })
       .state('game.page.player', {
         url: '/players/:player_id',
         templateUrl: 'app/game/views/game-page-player.html',
