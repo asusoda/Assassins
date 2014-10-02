@@ -53,6 +53,8 @@ var all = {
     callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
   },
 
+  mandrill : process.env.MANDRILL
+
 };
 
 // Export the config object based on the NODE_ENV
