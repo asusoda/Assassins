@@ -33,6 +33,7 @@
           <td>Username</td>
           <td>Alias</td>
           <td>Joined game</td>
+          <td>Score</td>
           <td>Target</td>
           <td>Assassin</td>
           <td>Alive</td>
@@ -41,15 +42,16 @@
       </thead>
       <tbody>
         <tr ng-repeat="player in game.players track by $index">
-          <td><a ui-sref="player.page({ id: player._id })">{{player.user.name}}</a></td>
+          <td><a ui-sref="user.profile({ id: player.user._id })">{{player.user.name}}</a></td>
           <td><a ui-sref="game.page.player({ id: game._id, player_id: player._id })">{{player.alias}}</a></td>
           <td>{{player.join_time | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+          <td>{{player.score}}</td>
           <td>{{player.target}}</td>
           <td>{{player.assassin}}</td>
           <td>{{player.alive}}</td>
           <td>
             <ul class="list-inline">
-              <li><button class="btn btn-default">Assign target</button></li>
+              <li><button class="btn btn-default" ng-click="assignTarget()">Assign target</button></li>
               <li><button class="btn btn-danger">Ban player</button></li>
             </ul>
           </td>
