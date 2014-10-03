@@ -21,7 +21,7 @@ router.delete('/:id/admins/:user_id', controller.removeAdmin);
 // Routes for announcements
 router.post('/:id/announcements', controller.createAnnouncement);
 router.put('/:id/announcements/:announcement_id', controller.editAnnouncement);
-router.delete('/:id/announcements/:announcement_id', contoller.removeAnnouncement);
+router.delete('/:id/announcements/:announcement_id', controller.removeAnnouncement);
 router.get('/:id/announcements/:announcement_id', controller.getAnnouncement);
 router.get('/:id/announcements', controller.getAnnouncements);
 

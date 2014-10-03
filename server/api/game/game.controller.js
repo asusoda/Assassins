@@ -207,22 +207,52 @@ exports.removeAdmin = function(req, res) {
 
 // Create an announcement for a game
 exports.createAnnouncement = function(req, res) {
-
+  Announcement.create(req.body, function(err, announcement) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, announcement);
+  });
 }
 
 // Edit an announcement for a game
 exports.editAnnouncement = function(req, res) {
-
+  Announcement.findById(req.params.id, function (err, announcement) {
+    if (err) { return handleError(res, err); }
+    if(!announcement) { return res.send(404); }
+    var updated = _.merge(announcement, req.body);
+    updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, announcement);
+    });
+  });
 }
 
-// Delete an announcement from a game
-exports.deleteAnnouncement = function(req, res) {
-
+// Remove an announcement from a game
+exports.removeAnnouncement = function(req, res) {
+  Announcement.findById(req.params.announcement_id, function (err, announcement) {
+    if(err) { return handleError(res, err); }
+    if(!announcement) { return res.send(404); }
+    announcement.remove(function(err) {
+      if(err) { return handleError(res, err); }
+      return res.send(204);
+    });
+  });
 }
 
 // Get announcements for a game
 exports.getAnnouncements = function(req, res) {
+  Announcement.find({ game: req.params.id }, function(err, announcements) {
+    if(err) { return handleError(res, err); }
+    if(!announcements) { return res.send(404); }
+    return res.json(200, announcements);
+  });
+}
 
+exports.getAnnouncement = function(req, res) {
+  Announcement.findById(req.params.announcement_id, function(err, announcement) {
+    if(err) { return handleError(res, err); }
+    if(!announcement) { return res.send(404); }
+    return res.json(200, announcement);
+  });
 }
 
 // Reset join URL for the game
