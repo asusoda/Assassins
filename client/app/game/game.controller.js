@@ -211,3 +211,20 @@ angular.module('assassinsApp')
     }
 
   });
+
+angular.module('assassinsApp')
+  .controller('GameAdminAnnouncements', function($scope, $stateParams, toaster, Games, game, announcements) {
+    $scope.formData = {};
+    $scope.announcements = announcements;
+
+    
+    $scope.createAnnouncement = function() {
+      Games.createAnnouncement(game._id ,$scope.formData).then(function(res) {
+        if(res && !res.error) {
+          toaster.pop('success', 'Announcement Created!', 'You created a new announcement for ' + game.title);
+        } else {
+          toaster.pop('error', 'Oops! There was an issue', res.error.message);
+        }
+      });
+    }
+  });

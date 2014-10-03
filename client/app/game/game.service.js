@@ -47,6 +47,12 @@ angular.module('assassinsApp')
     },
     getAdmins: function(game) {
       return Restangular.one('games', game).getList('admins');
+    },
+    createAnnouncement: function(game, data) {
+      return Restangular.one('games', game).all('announcements').post(data);
+    },
+    getAnnouncements: function(game) {
+      return Restangular.one('games', game).all('announcements');
     }
   };
 }]);
