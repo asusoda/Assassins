@@ -18,6 +18,9 @@ angular.module('assassinsApp')
     resetJoinKey: function(id, key) {
       return Restangular.one('games', id).one('join', key).put();
     },
+    assignTarget: function(game, id, data) {
+      return Restangular.one('games', game).one('users', id).all('targets').post(data);
+    },
     checkPlayer: function(game, id) {
       return Restangular.one('games', game).one('users', id).get();
     },

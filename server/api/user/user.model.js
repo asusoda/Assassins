@@ -13,8 +13,8 @@ var UserSchema = new Schema({
     default: 'user'
   },
   games: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Game'
+    game: { type: Schema.Types.ObjectId, ref: 'Game' },
+    player: { type: Schema.Types.ObjectId, ref: 'Player' }
   }],
   hashedPassword: String,
   provider: String,
@@ -43,7 +43,9 @@ UserSchema
   .virtual('profile')
   .get(function() {
     return {
+      '_id': this._id,
       'name': this.name,
+      'games': this.games,
       'role': this.role
     };
   });

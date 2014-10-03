@@ -70,8 +70,6 @@ angular.module('assassinsApp')
     $scope.game = game;
     $scope.user = {};
     $scope.errors = {};
-    $scope.formData = {};
-    $scope.formData.user = user._id;
 
     /**
      * Register and join game
@@ -153,7 +151,6 @@ angular.module('assassinsApp')
 
     $scope.join = function() {
       if($stateParams.join_url == game.join_url) {
-        console.log('correct join url');
         Games.addPlayer(game._id, $scope.formData).then(function(res) {
           if(res && !res.error) {
             console.log(res);
