@@ -207,11 +207,13 @@ exports.removeAdmin = function(req, res) {
 
 // Create an announcement for a game
 exports.createAnnouncement = function(req, res) {
+  req.body.game = req.params.id;
+  console.log(req.body);
   Announcement.create(req.body, function(err, announcement) {
     if(err) { return handleError(res, err); }
     return res.json(201, announcement);
   });
-}
+};
 
 // Edit an announcement for a game
 exports.editAnnouncement = function(req, res) {
@@ -224,7 +226,7 @@ exports.editAnnouncement = function(req, res) {
       return res.json(200, announcement);
     });
   });
-}
+};
 
 // Remove an announcement from a game
 exports.removeAnnouncement = function(req, res) {
@@ -236,7 +238,7 @@ exports.removeAnnouncement = function(req, res) {
       return res.send(204);
     });
   });
-}
+};
 
 // Get announcements for a game
 exports.getAnnouncements = function(req, res) {
@@ -245,15 +247,20 @@ exports.getAnnouncements = function(req, res) {
     if(!announcements) { return res.send(404); }
     return res.json(200, announcements);
   });
-}
+};
 
+/**
+ * Get a single announcement from a game
+ * @param  {String} req Object ID for the announcement
+ * @return {Object}     Returns the object for the announcement in JSON
+ */
 exports.getAnnouncement = function(req, res) {
   Announcement.findById(req.params.announcement_id, function(err, announcement) {
     if(err) { return handleError(res, err); }
     if(!announcement) { return res.send(404); }
     return res.json(200, announcement);
   });
-}
+};
 
 // Reset join URL for the game
 exports.resetJoinKey = function(req, res) {
