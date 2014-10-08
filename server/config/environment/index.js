@@ -53,6 +53,10 @@ var all = {
     callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
   },
 
+  newrelic: {
+    key: process.enc.NEW_RELIC_LICENSE_KEY
+  },
+
   mandrill : process.env.MANDRILL
 
 };

@@ -15,9 +15,11 @@
     "express-session": "~1.0.2",
     "jsonwebtoken": "^0.3.0",
     "lodash": "~2.4.1",
+    "mandrill-api": "1.0.40",
     "method-override": "~1.0.0",
     "mongoose": "~3.8.8",
     "morgan": "~1.0.0",
+    "newrelic": "^1.11.5",
     "passport": "~0.2.0",
     "passport-facebook": "latest",
     "passport-local": "~0.1.6",
@@ -26,8 +28,7 @@
     "serve-favicon": "~2.0.1",
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",
-    "socketio-jwt": "^2.0.2",
-    "mandrill-api": "1.0.40"
+    "socketio-jwt": "^2.0.2"
   },
   "devDependencies": {
     "connect-livereload": "~0.4.0",
