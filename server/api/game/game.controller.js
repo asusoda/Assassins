@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var Game = require('./game.model');
 var Player = require('./player.model');
+var Announcement = require('./announcement.model');
+var User = require('../user/user.model');
 var crypto = require('crypto');
 
 // Get list of games
@@ -83,18 +85,16 @@ exports.checkUser = function(req, res) {
     .exec(function(err, game) {
       if(err) { return handleError(res, err); }
       if(!game) { return res.send(404); }
-      _.filter(game.players, function(player) {
-        if(player.user == req.params.user_id) {
-          return res.json(200, player);
-        } else {
-          return res.json(200, {"error": {"message":"User is not a player in this game"}});
-        }
+      var query = _.find(game.players, function(player) {
+        return player.user = req.params.user_id;
       });
+      return res.json(200, query);
     });
 };
 
 // Creates a player document and adds it to the game
 exports.addPlayer = function(req, res) {
+  console.log(req.body);
   Player.create(req.body, function(err, player) {
     if(err) { return handleError(res, err); }
     Game.findByIdAndUpdate(
@@ -103,12 +103,20 @@ exports.addPlayer = function(req, res) {
       function(err, player) {
         if(err) { return handleError(res, err); }
         if(!player) { return res.send(404); }
-        return res.json(200, player);
+        User.findByIdAndUpdate(
+          req.body.user,
+          { $push: { games: { game: req.params.id, player: player._id } } },
+          function(err, user) {
+            if(err) { return handleError(res, err); }
+            if(!user) { return res.send(404); }
+            return res.json(200, player);
+          });
       });
   });
 };
 
 // Deletes a player document and removes it from the game
+// TODO AndRemove
 exports.removePlayer = function(req, res) {
   Player.findById(req.params.player_id, function (err, player) {
     if(err) { return handleError(res, err); }
@@ -116,12 +124,19 @@ exports.removePlayer = function(req, res) {
     player.remove(function(err) {
       if(err) { return handleError(res, err); }
       Game.findByIdAndUpdate(
-        req.params.game_id,
+        req.params.id,
         { $pull: { players: req.params.player_id } },
         function(err, game) {
           if(err) { return handleError(res, err); }
           if(!game) { return res.send(404); }
-          return res.json(204, game);
+          User.findByIdAndUpdate(
+            player.user,
+            { $pull: { games: { game: req.params.id, player: req.params.player_id } } },
+            function(err, user) {
+              if(err) { return handleError(res, err); }
+              if(!user) { return res.send(404); }
+              return res.json(204, game);
+            });
         });
     });
   });
@@ -187,6 +202,63 @@ exports.removeAdmin = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
     return res.json(200, game.admins.indexOf(req.body._id));
+  });
+};
+
+// Create an announcement for a game
+exports.createAnnouncement = function(req, res) {
+  req.body.game = req.params.id;
+  console.log(req.body);
+  Announcement.create(req.body, function(err, announcement) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, announcement);
+  });
+};
+
+// Edit an announcement for a game
+exports.editAnnouncement = function(req, res) {
+  Announcement.findById(req.params.id, function (err, announcement) {
+    if (err) { return handleError(res, err); }
+    if(!announcement) { return res.send(404); }
+    var updated = _.merge(announcement, req.body);
+    updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, announcement);
+    });
+  });
+};
+
+// Remove an announcement from a game
+exports.removeAnnouncement = function(req, res) {
+  Announcement.findById(req.params.announcement_id, function (err, announcement) {
+    if(err) { return handleError(res, err); }
+    if(!announcement) { return res.send(404); }
+    announcement.remove(function(err) {
+      if(err) { return handleError(res, err); }
+      return res.send(204);
+    });
+  });
+};
+
+// Get announcements for a game
+exports.getAnnouncements = function(req, res) {
+  Announcement.find({ game: req.params.id }, function(err, announcements) {
+    if(err) { return handleError(res, err); }
+    if(!announcements) { return res.send(404); }
+    return res.json(200, announcements);
+  });
+};
+
+/**
+ * Get a single announcement from a game
+ * @param  {String} req Object ID for the announcement
+ * @return {Object}     Returns the object for the announcement in JSON
+ */
+exports.getAnnouncement = function(req, res) {
+  Announcement.findById(req.params.announcement_id, function(err, announcement) {
+    if(err) { return handleError(res, err); }
+    if(!announcement) { return res.send(404); }
+    return res.json(200, announcement);
   });
 };
 

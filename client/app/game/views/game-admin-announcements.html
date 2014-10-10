@@ -1,0 +1,48 @@
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-respsonsive table-game-announcements">
+		  <thead>
+		    <tr>
+		      <td>Title</td>
+		      <td>Description</td>
+		      <td>Created on</td>
+		      <td>Actions</td>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr ng-repeat="announcement in announcements">
+		      <td>{{announcement.title}}</td>
+		      <td>{{announcement.description}}</td>
+		      <td>{{announcement.created_on | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+		      <td><button class="btn btn-warning">Edit</button></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="section-container">
+			<div class="section-header">
+				<h3>Create New Announcement</h3>
+			</div>
+			<div class="section-inner">
+				<form role="form">
+					<div class="form-group">
+						<label for="announcement-title">Title</label>
+						<input type="text" class="form-control" id="#TODO" ng-model="formData.title">
+					</div>
+					<div class="form-group">
+						<label for="announcement-body">Body</label>
+						<textarea name="announcement-body" class="form-control" cols="30" rows="10" ng-model="formData.description"></textarea>
+					</div>
+					<div class="form-group">
+						<button class="btn btn-success" role="button" ng-click="createAnnouncement()">
+							Create
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

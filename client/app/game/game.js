@@ -102,9 +102,13 @@ angular.module('assassinsApp')
       .state('game.page.admin.announcements', {
         url: '/announcements',
         templateUrl: 'app/game/views/game-admin-announcements.html',
+        controller: 'GameAdminAnnouncements',
         resolve: {
           game: function($stateParams, Games) {
             return Games.getGame($stateParams.id).$object;
+          },
+          announcements: function($stateParams, Games) {
+            return Games.getAnnouncements($stateParams.id).$object;
           }
         }
       });
