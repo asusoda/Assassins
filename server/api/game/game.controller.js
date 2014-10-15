@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Game = require('./game.model');
 var Player = require('./player.model');
+var User = require('../user/user.model');
 var crypto = require('crypto');
 
 // Get list of games
@@ -120,6 +121,7 @@ exports.checkUser = function(req, res) {
 
 // Creates a player document and adds it to the game
 exports.addPlayer = function(req, res) {
+  console.log(req.body);
   Player.create(req.body, function(err, player) {
     if(err) { return handleError(res, err); }
     Game.findByIdAndUpdate(
@@ -128,12 +130,20 @@ exports.addPlayer = function(req, res) {
       function(err, player) {
         if(err) { return handleError(res, err); }
         if(!player) { return res.send(404); }
-        return res.json(200, player);
+        User.findByIdAndUpdate(
+          req.body.user,
+          { $push: { games: { game: req.params.id, player: player._id } } },
+          function(err, user) {
+            if(err) { return handleError(res, err); }
+            if(!user) { return res.send(404); }
+            return res.json(200, player);
+          });
       });
   });
 };
 
 // Deletes a player document and removes it from the game
+// TODO AndRemove
 exports.removePlayer = function(req, res) {
   Player.findById(req.params.player_id, function (err, player) {
     if(err) { return handleError(res, err); }
@@ -141,12 +151,19 @@ exports.removePlayer = function(req, res) {
     player.remove(function(err) {
       if(err) { return handleError(res, err); }
       Game.findByIdAndUpdate(
-        req.params.game_id,
+        req.params.id,
         { $pull: { players: req.params.player_id } },
         function(err, game) {
           if(err) { return handleError(res, err); }
           if(!game) { return res.send(404); }
-          return res.json(204, game);
+          User.findByIdAndUpdate(
+            player.user,
+            { $pull: { games: { game: req.params.id, player: req.params.player_id } } },
+            function(err, user) {
+              if(err) { return handleError(res, err); }
+              if(!user) { return res.send(404); }
+              return res.json(204, game);
+            });
         });
     });
   });
