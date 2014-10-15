@@ -2,6 +2,7 @@
 
 var express = require('express');
 var controller = require('./game.controller');
+var updateCtrl = require('./update.controller');
 
 var router = express.Router();
 
@@ -19,11 +20,22 @@ router.post('/:id/players', controller.addPlayer);
 router.get('/:id/players', controller.getPlayers);
 router.get('/:id/players/:player_id', controller.getPlayer);
 router.delete('/:id/players/:player_id', controller.removePlayer);
+
+// Game targets
 router.put('/:id/players/:player_id/targets/:target_id', controller.assignTarget);
 router.get('/:id/players/:player_id/targets', controller.getTargets);
 router.get('/:id/players/:player_id/targets/:target_id', controller.getTarget);
 router.put('/:id/players/:player_id/targets/:target_id', controller.updateTarget);
 router.delete('/:id/players/:player_id/targets/:target_id', controller.removeTarget);
+
+// Game updates
+router.post('/:id/updates', updateCtrl.create);
+router.get('/:id/updates', updateCtrl.index);
+router.get('/:id/updates/:update_id', updateCtrl.show);
+router.put('/:id/updates/:update_id', updateCtrl.update);
+router.delete('/:id/updates/:update_id', updateCtrl.destroy);
+
+
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 

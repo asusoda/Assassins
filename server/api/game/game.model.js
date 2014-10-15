@@ -11,6 +11,7 @@ var GameSchema = new Schema({
   active: { type: Boolean, default: true },
   accepting_players: { type: Boolean, default: true },
   join_url: { type: String },
+  updates: [{ type: Schema.Types.ObjectId, ref: 'Update' }],
   players: [{ type: Schema.Types.ObjectId, ref: 'Player' }],
   rules: {
     weapons: [{ type: String }],

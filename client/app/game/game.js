@@ -99,9 +99,9 @@ angular.module('assassinsApp')
           }
         }
       })
-      .state('game.page.admin.announcements', {
-        url: '/announcements',
-        templateUrl: 'app/game/views/game-admin-announcements.html',
+      .state('game.page.admin.updates', {
+        url: '/updates',
+        templateUrl: 'app/game/views/game-admin-updates.html',
         resolve: {
           game: function($stateParams, Games) {
             return Games.getGame($stateParams.id).$object;
