@@ -9,8 +9,8 @@ var PlayerSchema = new Schema({
   score: { type: Number, default: 0 },
   alive: { type: Boolean, default: true },
   banned: { type: Boolean, default: false },
-  target: [{
-    target: { type: Schema.Types.ObjectId, ref: 'User' },
+  targets: [{
+    target: { type: Schema.Types.ObjectId, ref: 'Player' },
     elimination: { type: Schema.Types.ObjectId, ref: 'Elimination' },
     active: { type: Boolean, default: true },
     created_on: { type: Date, default: Date.now }

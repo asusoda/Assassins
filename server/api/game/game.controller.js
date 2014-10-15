@@ -35,7 +35,7 @@ exports.create = function(req, res) {
 exports.assignTarget = function(req, res) {
   Player.findByIdAndUpdate(
     req.params.player_id,
-    { $push: { target: { target: req.params.target_id, } } },
+    { $push: { targets: { target: req.params.target_id, } } },
     function(err, player) {
       if(err) { return handleError(res, err); }
       if(!player) { return res.send(404); }
@@ -47,15 +47,32 @@ exports.assignTarget = function(req, res) {
 exports.getTarget = function(req, res) {
   Player.findById(req.params.player_id, function (err, player) {
     if(err) { return handleError(res, err); }
-    var target = player.target.id(req.params.target_id);
+    var target = player.targets.id(req.params.target_id);
     if(!target) { return res.send(404); }
-    return res.json(200, target);
+    Player.populate(player.targets, function(err, target) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, target);
+    });
   });
 };
 
 // Gets a list of targets
 exports.getTargets = function(req, res) {
-
+  Player.findById(req.params.player_id, 'targets', function(err, targets) {
+    if(err) { return handleError(res, err); }
+    if(!targets) { return res.send(404); }
+    var targets = [];
+    console.log(targets);
+    _.forEach(targets, function(target) {
+      User.populate(target.target, function(err, target) {
+        if(err) { return handleError(res, err); }
+        if(!targets) { return res.send(404); }
+        console.log(target);
+        targets.push(target);
+      });
+    });
+    return res.json(200, targets);
+  });
 };
 
 // Updates a single target
@@ -73,7 +90,15 @@ exports.updateTarget = function(req, res) {
 
 // Removes a target from a player
 exports.removeTarget = function(req, res) {
-
+  Player.findById(req.params.player_id, function(err, player) {
+    if(err) { return handleError(res, err); }
+    if(!player) { return res.send(404); }
+    var target = player.target.id(req.params.target_id).remove();
+    player.save(function(err) {
+      if(err) { return handleError(err); }
+      return res.send(204);
+    });
+  });
 };
 
 // Check if user is a player in the game
@@ -83,7 +108,7 @@ exports.checkUser = function(req, res) {
     .exec(function(err, game) {
       if(err) { return handleError(res, err); }
       if(!game) { return res.send(404); }
-      _.filter(game.players, function(player) {
+      _.find(game.players, function(player) {
         if(player.user == req.params.user_id) {
           return res.json(200, player);
         } else {

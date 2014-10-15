@@ -42,9 +42,7 @@ Game.find({}).remove(function() {
       location : 'San Francisco, CA',
       description : 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla.'
     }, function(err, game) {
-      var player_01 = {};
       Player.create({ alias:'El Duderino', score: 2 }, function(err, player) {
-        player_01 = player;
           if(err) { return handleError(res, err); }
           Game.findByIdAndUpdate(
             game._id,
@@ -53,15 +51,15 @@ Game.find({}).remove(function() {
               if(err) { return handleError(res, err); }
               if(!player) { return res.send(404); }
             });
-        });
-      Player.create({ alias:'Mr Lebowski', target: { target: player_01._id }, score: 3 }, function(err, player) {
-          if(err) { return handleError(res, err); }
-          Game.findByIdAndUpdate(
-            game._id,
-            { $push: { players: player._id } },
-            function(err, player) {
+          Player.create({ alias:'Mr Lebowski', targets: [{ target: player._id }], score: 3 }, function(err, player) {
               if(err) { return handleError(res, err); }
-              if(!player) { return res.send(404); }
+              Game.findByIdAndUpdate(
+                game._id,
+                { $push: { players: player._id } },
+                function(err, player) {
+                  if(err) { return handleError(res, err); }
+                  if(!player) { return res.send(404); }
+                });
             });
         });
       Player.create({alias:'Donny'}, function(err, player) {

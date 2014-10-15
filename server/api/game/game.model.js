@@ -16,7 +16,8 @@ var GameSchema = new Schema({
   rules: {
     weapons: [{ type: String }],
     safe_zones: [{ type: String }],
-    interval: { type: Number, default: 2 }
+    interval: { type: Number, default: 2 },
+    safe_item: [{ type: String }]
   },
   admins: [{
     type: Schema.Types.ObjectId,

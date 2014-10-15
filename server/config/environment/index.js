@@ -54,7 +54,7 @@ var all = {
   },
 
   newrelic: {
-    key: process.enc.NEW_RELIC_LICENSE_KEY
+    key: process.env.NEW_RELIC_LICENSE_KEY
   },
 
   mandrill : process.env.MANDRILL
