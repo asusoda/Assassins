@@ -6,6 +6,7 @@
  * Sections
  */
 .section-container {
+  background-color: #fff;
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
@@ -24,5 +25,14 @@
     &:last-child {
       margin-bottom: 0;
     }
+  }
+}
+
+/**
+ * Game home page
+ */
+.table-game-players {
+  span {
+    float: right;
   }
 }

@@ -38,8 +38,6 @@ angular.module('assassinsApp')
     Games.checkAdmin(game._id, user._id).then(function(res) {
       if(res && !res.error) {
         $scope.isOrganizer = true;
-      } else {
-        $scope.isOrganizer = false;
       }
     });
 
@@ -74,7 +72,6 @@ angular.module('assassinsApp')
     /**
      * Register and join game
      * @param  {Object} form Submitted form
-     * @return {[type]}      [description]
      */
     $scope.register = function(form) {
       $scope.submitted = true;

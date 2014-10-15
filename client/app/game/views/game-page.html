@@ -4,34 +4,73 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8">
-        <header>
-          <h1>{{game.title}}</h1>
-          <ul class="list-inline">
-            <li ng-if="game.location">{{game.location}}</li>
-            <li>{{game.created_on | date:'longDate'}}</li>
-            <li>Game active: {{game.active}}</li>
-          </ul>
-          <h3>{{game.admins}}</h3>
-          <div class="game-action-bar" ng-if="isLoggedIn">
+        <div class="content-container">
+          <header>
+            <h1 class="title">{{game.title}}</h1>
             <ul class="list-inline">
-              <li><div button-game-join game="game" user="user"></div></li>
-              <li><button class="btn btn-default" ng-if="isOrganizer" ui-sref="game.page.admin({ id: game._id })"><span class="glyphicon glyphicon-cog"></span>Admin Dashboard</button></li>
+              <li ng-if="game.location">{{game.location}}</li>
+              <li>{{game.created_on | date:'longDate'}}</li>
+              <li>Game active: {{game.active}}</li>
+            </ul>
+            <h3>{{game.admins}}</h3>
+            <div class="game-action-bar" ng-if="isLoggedIn">
+              <ul class="list-inline">
+                <li><div button-game-join game="game" user="user"></div></li>
+                <li><button class="btn btn-default" ng-if="isOrganizer || user.role == 'admin'" ui-sref="game.page.admin({ id: game._id })"><span class="glyphicon glyphicon-cog"></span>Admin Dashboard</button></li>
+              </ul>
+            </div>
+          </header>
+          <p>{{game.description}}</p>
+          <hr>
+          <div class="game-feed">
+            <div class="game-feed-create" ng-if="isLoggedIn">
+              <ul class="list-inline game-actions">
+                <li>
+                  <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span>Add elimination</button>
+                </li>
+                <li>
+                  <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-eye-open"></span>Add encounter</button>
+                </li>
+                <li ng-if="isOrganizer">
+                  <button class="btn btn-warning" type="button"><span class="glyphicon glyphicon-bullhorn"></span>Create update</button>
+                </li>
+              </ul>
+            </div>
+            <h5>Recent Activity</h5>
+            <ul class="list-unstyled list-game-feed">
+              <li class="feed-item" ng-repeat="event in game.feed">
+
+              </li>
             </ul>
           </div>
-        </header>
-        <p>{{game.description}}</p>
+        </div>
       </div>
       <div class="col-md-4">
-        <div ng-if="inGame">
-          <h5>Target: <a ui-sref="game.page.player({ id: game._id, player_id: currentPlayer.target._id})">{{currentPlayer.target.alias}}</a></h5>
-          <button class="btn btn-success" ui-sref="game.page.elimination({ id: game._id })">Eliminate target</button>
+        <div class="content-container">
+          <div ng-if="inGame">
+            <h5>Target: <a ui-sref="game.page.player({ id: game._id, player_id: currentPlayer.target._id})">{{currentPlayer.target.alias}}</a></h5>
+            <button class="btn btn-success" ui-sref="game.page.elimination({ id: game._id })">Eliminate target</button>
+          </div>
+          <ul class="list-unstyled">
+            <h3>{{game.players.length}} assassins</h3>
+            <table class="table table-responsive table-game-players">
+              <thead>
+                <tr>
+                  <td>Alias</td>
+                  <td><span>Score</span></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="player in game.players | orderBy: '-score'">
+                  <td>
+                    <a ui-sref="game.page.player({ id: game._id, player_id: player._id })">{{player.alias}}</a>
+                  </td>
+                  <td><span>{{player.score}}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </ul>
         </div>
-        <ul class="list-unstyled">
-          <h3>{{game.players.length}} Players</h3>
-          <li ng-repeat="player in game.players">
-            <a ui-sref="game.page.player({ id: game._id, player_id: player._id })">{{player.alias}}</a>
-          </li>
-        </ul>
       </div>
     </div>
   </div>
