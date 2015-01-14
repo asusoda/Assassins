@@ -19,7 +19,6 @@
     "method-override": "~1.0.0",
     "mongoose": "~3.8.8",
     "morgan": "~1.0.0",
-    "newrelic": "^1.11.5",
     "passport": "~0.2.0",
     "passport-facebook": "latest",
     "passport-local": "~0.1.6",
